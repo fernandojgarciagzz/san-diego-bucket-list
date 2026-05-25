@@ -21,8 +21,8 @@
     const meta = document.querySelector('.header-meta');
     meta.innerHTML = `
       <span class="stamp">
-        <span class="stamp-label">Grupo</span>
-        <span class="stamp-value">${TRIP.people} en total</span>
+        <span class="stamp-label">Quiénes</span>
+        <span class="stamp-value">${TRIP.groupLabel}</span>
       </span>
       <span class="stamp">
         <span class="stamp-label">Fechas</span>
