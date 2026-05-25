@@ -51,6 +51,12 @@
     const done = !!state[item.id];
     const rec = item.recommended ? '<span class="tag tag-rec">⭐ Recomendado</span>' : '';
     const tags = (item.tags || []).map(tagHTML).join('');
+    const booking = item.bookingUrl
+      ? `<a class="card-booking" href="${item.bookingUrl}" target="_blank" rel="noopener noreferrer">
+           <span class="card-booking-label">Comprar boletos</span>
+           <span class="card-booking-arrow" aria-hidden="true">→</span>
+         </a>`
+      : '';
     return `
       <article class="card ${section.cardClass} ${done ? 'done' : ''}" data-id="${item.id}">
         <span class="card-stamp" aria-hidden="true">✓ Hecho</span>
@@ -59,6 +65,7 @@
           <h3 class="card-name">${item.name}${rec ? ' ' + rec : ''}</h3>
           <p class="card-desc">${item.desc}</p>
           ${tags ? `<div class="card-tags">${tags}</div>` : ''}
+          ${booking}
         </div>
       </article>
     `;
@@ -356,6 +363,9 @@
   // ───────── Event delegation ─────────
   function bindEvents() {
     document.getElementById('sections').addEventListener('click', (e) => {
+      // Dejar que los links externos (Comprar boletos, etc.) hagan lo suyo
+      if (e.target.closest('a')) return;
+
       const check = e.target.closest('[data-action="toggle"]');
       if (check) {
         e.stopPropagation();

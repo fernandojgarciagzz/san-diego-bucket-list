@@ -877,6 +877,67 @@ body::before {
 .card.done .card-distance { color: var(--ink-faint); border-color: var(--rule-soft); }
 .card.done .card-distance::before { color: var(--ink-faint); }
 
+/* Booking link — editorial ticket-stub style */
+.card-booking {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 14px;
+  padding: 7px 14px 6px;
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 1.8px;
+  text-transform: uppercase;
+  color: var(--rust);
+  text-decoration: none;
+  border: 1.5px solid var(--rust);
+  border-radius: 2px;
+  background: rgba(201,79,42,0.04);
+  position: relative;
+  transition: background 0.2s, color 0.2s, transform 0.15s, box-shadow 0.15s;
+  cursor: pointer;
+  align-self: flex-start;
+}
+.card-booking::before,
+.card-booking::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--paper-card-2);
+  border: 1.5px solid var(--rust);
+  transform: translateY(-50%);
+}
+.card-booking::before { left: -4px; }
+.card-booking::after  { right: -4px; }
+
+.card-booking-arrow {
+  display: inline-block;
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 14px;
+  letter-spacing: 0;
+  text-transform: none;
+  font-weight: 400;
+  transition: transform 0.2s;
+}
+.card-booking:hover {
+  background: var(--rust);
+  color: var(--paper-card-2);
+}
+.card-booking:hover .card-booking-arrow { transform: translateX(3px); }
+.card-booking:hover::before,
+.card-booking:hover::after {
+  background: var(--rust);
+}
+
+.card.done .card-booking {
+  opacity: 0.5;
+}
+
 /* ───────── FOOTER / COLOPHON ───────── */
 footer {
   margin-top: 56px;
