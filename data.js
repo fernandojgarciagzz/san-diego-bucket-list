@@ -148,7 +148,7 @@ const SECTIONS = [
           { class: 'tag-tip', label: 'Llegar a las 9 AM' },
           { class: 'tag-tip', label: 'Tickets online' }
         ],
-        bookingUrl: 'https://tickets.sandiegozoo.org/',
+        bookingUrl: 'https://sandiegozoo.org/tickets',
         lat: 32.7360, lng: -117.1490, zoom: 15
       },
       {
@@ -170,7 +170,7 @@ const SECTIONS = [
           { class: 'tag-outdoor', label: 'Jardín' },
           { class: 'tag-group', label: 'Tranquilo' }
         ],
-        bookingUrl: 'https://www.niwa.org/admission',
+        bookingUrl: 'https://www.niwa.org/visit',
         lat: 32.7300, lng: -117.1494, zoom: 17
       },
       {
@@ -181,7 +181,7 @@ const SECTIONS = [
           { class: 'tag-group', label: 'Papás friendly' },
           { class: 'tag-tip', label: 'Sáb 30 pre-carrera' }
         ],
-        bookingUrl: 'https://www.midway.org/tickets/',
+        bookingUrl: 'https://www.midway.org/visit/buy-tickets/',
         lat: 32.7138, lng: -117.1751, zoom: 16
       },
       {
@@ -239,7 +239,7 @@ const SECTIONS = [
           { class: 'tag-group', label: 'Grupo completo' },
           { class: 'tag-outdoor', label: 'Mission Beach' }
         ],
-        bookingUrl: 'https://www.belmontpark.com/tickets/',
+        bookingUrl: 'https://www.belmontpark.com/tickets-reservation',
         lat: 32.7708, lng: -117.2530, zoom: 16
       },
       {
