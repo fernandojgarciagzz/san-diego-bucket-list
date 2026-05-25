@@ -20,10 +20,23 @@
   function renderHeader() {
     const meta = document.querySelector('.header-meta');
     meta.innerHTML = `
-      <span class="pill">${TRIP.people} personas</span>
-      <span class="pill">${TRIP.dates}</span>
-      <span class="pill">Airbnb</span>
-      <span class="pill pill-race">🏃 Half Marathon · Dom 31 Mayo</span>
+      <span class="stamp">
+        <span class="stamp-label">Grupo</span>
+        <span class="stamp-value">${TRIP.people} en total</span>
+      </span>
+      <span class="stamp">
+        <span class="stamp-label">Fechas</span>
+        <span class="stamp-value">${TRIP.dates}</span>
+      </span>
+      <span class="stamp">
+        <span class="stamp-label">Base</span>
+        <span class="stamp-value">Del Cerro</span>
+      </span>
+      <span class="stamp stamp-feature">
+        <span class="stamp-flag">Evento principal</span>
+        <span class="stamp-title">Half Marathon</span>
+        <span class="stamp-meta">Domingo 31 Mayo · 6:15 AM</span>
+      </span>
     `;
     document.querySelector('.eyebrow').textContent =
       `${TRIP.city} · Mayo–Junio ${TRIP.year}`;
@@ -39,14 +52,15 @@
     const rec = item.recommended ? '<span class="tag tag-rec">⭐ Recomendado</span>' : '';
     const tags = (item.tags || []).map(tagHTML).join('');
     return `
-      <div class="card ${section.cardClass} ${done ? 'done' : ''}" data-id="${item.id}">
-        <div class="card-check" data-action="toggle"></div>
+      <article class="card ${section.cardClass} ${done ? 'done' : ''}" data-id="${item.id}">
+        <span class="card-stamp" aria-hidden="true">✓ Hecho</span>
+        <button class="card-check" data-action="toggle" type="button" aria-label="Marcar como hecho"></button>
         <div class="card-body">
-          <div class="card-name">${item.name}${rec ? ' ' + rec : ''}</div>
-          <div class="card-desc">${item.desc}</div>
+          <h3 class="card-name">${item.name}${rec ? ' ' + rec : ''}</h3>
+          <p class="card-desc">${item.desc}</p>
           ${tags ? `<div class="card-tags">${tags}</div>` : ''}
         </div>
-      </div>
+      </article>
     `;
   }
 

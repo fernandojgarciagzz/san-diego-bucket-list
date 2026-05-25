@@ -3,9 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>San Diego Bucket List 2026</title>
+  <title>San Diego, a la lista — Bucket List 2026</title>
 
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,700;1,300&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,700;1,9..144,300;1,9..144,500&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
 
@@ -16,16 +18,59 @@
   <div class="layout">
 
     <div class="col-content">
-      <header>
-        <div class="eyebrow"></div>
-        <h1>The <em>Bucket</em><br>List</h1>
+
+      <header class="masthead">
+        <div class="masthead-sun" aria-hidden="true">
+          <svg viewBox="0 0 120 120">
+            <circle cx="60" cy="60" r="22" fill="currentColor"/>
+            <g stroke="currentColor" stroke-width="2.5" stroke-linecap="round" fill="none">
+              <line x1="60" y1="4"  x2="60" y2="26"/>
+              <line x1="60" y1="94" x2="60" y2="116"/>
+              <line x1="4"  y1="60" x2="26" y2="60"/>
+              <line x1="94" y1="60" x2="116" y2="60"/>
+              <line x1="20" y1="20" x2="36" y2="36"/>
+              <line x1="84" y1="84" x2="100" y2="100"/>
+              <line x1="100" y1="20" x2="84" y2="36"/>
+              <line x1="20" y1="100" x2="36" y2="84"/>
+            </g>
+          </svg>
+        </div>
+
+        <div class="masthead-coast" aria-hidden="true">
+          <svg viewBox="0 0 320 40" preserveAspectRatio="none">
+            <path d="M0,20 Q40,8 80,18 T160,16 T240,22 T320,12" stroke="currentColor" stroke-width="1.4" fill="none" stroke-linecap="round"/>
+          </svg>
+        </div>
+
+        <div class="kicker">
+          <span class="kicker-label">Edición</span>
+          <span class="kicker-num">Nº 01</span>
+          <span class="kicker-dot" aria-hidden="true">✦</span>
+          <span class="eyebrow"></span>
+        </div>
+
+        <h1 class="hero">
+          <span class="hero-row">
+            <span class="hero-word">San</span>
+          </span>
+          <span class="hero-row">
+            <span class="hero-word hero-em">Diego<span class="hero-period">.</span></span>
+          </span>
+          <span class="hero-tail">a la lista</span>
+        </h1>
+
+        <p class="dek">
+          <span class="dek-rule" aria-hidden="true"></span>
+          Una guía a seis manos para correr trece millas, comer como dios manda y vagar por la costa sur.
+        </p>
+
         <div class="header-meta"></div>
       </header>
 
       <div class="progress-wrap">
-        <div class="progress-label">
-          <span>Progreso del viaje</span>
-          <button id="resetBtn" class="reset-btn" type="button">Reset</button>
+        <div class="progress-meta">
+          <span class="progress-label">Bitácora del viaje</span>
+          <button id="resetBtn" class="reset-btn" type="button">Reiniciar</button>
         </div>
         <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
         <div class="progress-count" id="progressCount">0 / 0 completados</div>
@@ -34,10 +79,18 @@
       <main id="sections"></main>
 
       <footer>
-        <div class="footer-note"><span class="fn-icon">🎟️</span><span><strong style="color:rgba(255,255,255,0.7)">Go San Diego Card:</strong> Con Zoo + SeaWorld, el pase combinado puede ahorrar 20–30% para 6 personas. Calculen antes de comprar por separado.</span></div>
-        <div class="footer-note"><span class="fn-icon">⚾</span><span>Padres sin juego en casa del 29 May al 3 Jun. Siguiente home game: 5 de Junio vs Mets.</span></div>
-        <div class="footer-note"><span class="fn-icon">🌡️</span><span>~20–24°C de día. June Gloom (niebla costera matutina) es normal — se despeja al mediodía. Chamarra ligera para las noches.</span></div>
-        <div class="footer-note"><span class="fn-icon">🍽️</span><span>Animae y Born and Raised requieren reservación. No lo dejen para último minuto con grupo de 6.</span></div>
+        <div class="footer-mast">
+          <span class="footer-mast-mark">SD · 2026</span>
+          <span class="footer-mast-rule" aria-hidden="true"></span>
+          <span class="footer-mast-line">Notas al margen</span>
+        </div>
+        <div class="footer-note"><span class="fn-icon">◆</span><span><strong>Go San Diego Card:</strong> Con Zoo + SeaWorld, el pase combinado puede ahorrar 20–30% para 6 personas. Calculen antes de comprar por separado.</span></div>
+        <div class="footer-note"><span class="fn-icon">◆</span><span><strong>Padres:</strong> Sin juego en casa del 29 May al 3 Jun. Siguiente home game: 5 de Junio vs Mets.</span></div>
+        <div class="footer-note"><span class="fn-icon">◆</span><span><strong>Clima:</strong> ~20–24°C de día. June Gloom (niebla costera matutina) es normal — se despeja al mediodía. Chamarra ligera para las noches.</span></div>
+        <div class="footer-note"><span class="fn-icon">◆</span><span><strong>Reservas:</strong> Animae y Born and Raised requieren reservación. No lo dejen para último minuto con grupo de 6.</span></div>
+        <div class="footer-colophon">
+          Impreso a mano · Bucket list editorial · Sin patrocinadores · Hecho con cariño desde la cocina
+        </div>
       </footer>
     </div>
 

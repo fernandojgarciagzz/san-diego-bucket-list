@@ -13,7 +13,7 @@ const TRIP = {
 const SECTIONS = [
   {
     id: 'home',
-    title: 'Casa Base',
+    title: 'Airbnb',
     icon: '🏡',
     iconClass: 'icon-home',
     cardClass: 'card-home',
