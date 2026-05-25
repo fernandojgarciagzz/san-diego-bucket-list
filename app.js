@@ -51,8 +51,9 @@
     const done = !!state[item.id];
     const rec = item.recommended ? '<span class="tag tag-rec">⭐ Recomendado</span>' : '';
     const tags = (item.tags || []).map(tagHTML).join('');
+    const safeUrl = (item.bookingUrl || '').replace(/&/g, '&amp;').replace(/"/g, '&quot;');
     const booking = item.bookingUrl
-      ? `<a class="card-booking" href="${item.bookingUrl}" target="_blank" rel="noopener noreferrer">
+      ? `<a class="card-booking" href="${safeUrl}" target="_blank" rel="noopener noreferrer">
            <span class="card-booking-label">Comprar boletos</span>
            <span class="card-booking-arrow" aria-hidden="true">→</span>
          </a>`

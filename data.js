@@ -148,7 +148,7 @@ const SECTIONS = [
           { class: 'tag-tip', label: 'Llegar a las 9 AM' },
           { class: 'tag-tip', label: 'Tickets online' }
         ],
-        bookingUrl: 'https://sandiegozoo.org/tickets',
+        bookingUrl: 'https://tickets.sandiegozoo.org/webstore/shop/ViewItems.aspx?CG=webstoresdz&C=sdztp',
         lat: 32.7360, lng: -117.1490, zoom: 15
       },
       {
