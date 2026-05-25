@@ -12,6 +12,27 @@ const TRIP = {
 
 const SECTIONS = [
   {
+    id: 'home',
+    title: 'Casa Base',
+    icon: '🏡',
+    iconClass: 'icon-home',
+    cardClass: 'card-home',
+    markerColor: '#4A7C59',
+    markerEmoji: '🏡',
+    items: [
+      {
+        id: 'airbnb-del-cerro',
+        name: 'Airbnb · Del Cerro',
+        desc: '6201 Del Cerro Blvd, San Diego CA 92120. Base del viaje. Del Cerro queda al este, cerca de Mission Trails: ~15 min a Balboa Park y el Zoo, ~20 min a Downtown / Embarcadero, ~25 min a La Jolla y Mission Beach por la I-8 y la 52. Zona residencial tranquila.',
+        tags: [
+          { class: 'tag-group', label: 'Base 6 personas' },
+          { class: 'tag-tip', label: 'Del Cerro · zona residencial' }
+        ],
+        lat: 32.7898, lng: -117.0698, zoom: 15
+      }
+    ]
+  },
+  {
     id: 'race',
     title: 'La Carrera',
     icon: '🏁',

@@ -56,6 +56,8 @@
       ? `${count} evento${count === 1 ? '' : 's'}`
       : section.id === 'food'
       ? `${count} spots`
+      : section.id === 'home'
+      ? 'Del Cerro'
       : `${count} lugares`;
     return `
       <div class="section" data-section="${section.id}">
@@ -79,8 +81,45 @@
   // ───────── Map ─────────
   let map, markers = {};
   let activeId = null;
+  let meMarker = null;
+  let myPos = null;
 
-  function buildMarkerIcon(color, done) {
+  // ───────── Geo helpers ─────────
+  function haversineKm(a, b) {
+    const toRad = d => d * Math.PI / 180;
+    const R = 6371;
+    const dLat = toRad(b[0] - a[0]);
+    const dLng = toRad(b[1] - a[1]);
+    const lat1 = toRad(a[0]);
+    const lat2 = toRad(b[0]);
+    const h = Math.sin(dLat/2)**2 + Math.cos(lat1) * Math.cos(lat2) * Math.sin(dLng/2)**2;
+    return 2 * R * Math.asin(Math.sqrt(h));
+  }
+
+  // Estimación cruda de tiempo en auto: depende de distancia (más lejos = más freeway)
+  function estimateDriveMin(km) {
+    let avgKmh;
+    if (km < 3) avgKmh = 28;       // surface streets
+    else if (km < 10) avgKmh = 42; // mixto
+    else avgKmh = 65;              // mayormente freeway
+    return Math.max(1, Math.round((km / avgKmh) * 60));
+  }
+
+  function formatDistance(km) {
+    if (km < 1) return `${Math.round(km * 1000)} m · ~${estimateDriveMin(km)} min en auto`;
+    return `${km.toFixed(1)} km · ~${estimateDriveMin(km)} min en auto`;
+  }
+
+  function buildMarkerIcon(color, done, emoji) {
+    if (emoji) {
+      return L.divIcon({
+        className: '',
+        html: `<div class="sd-marker sd-marker-emoji ${done ? 'done' : ''}" style="border-color:${color}">${emoji}</div>`,
+        iconSize: [32, 32],
+        iconAnchor: [16, 16],
+        popupAnchor: [0, -16]
+      });
+    }
     return L.divIcon({
       className: '',
       html: `<div class="sd-marker ${done ? 'done' : ''}" style="background:${color}"></div>`,
@@ -115,7 +154,7 @@
       section.items.forEach(item => {
         const done = !!state[item.id];
         const marker = L.marker([item.lat, item.lng], {
-          icon: buildMarkerIcon(section.markerColor, done)
+          icon: buildMarkerIcon(section.markerColor, done, section.markerEmoji)
         }).addTo(map);
 
         marker.bindPopup(popupHTML(item, section), { offset: [0, -8] });
@@ -129,6 +168,94 @@
         markers[item.id] = marker;
       });
     });
+
+    addLocateControl();
+  }
+
+  // ───────── Locate me ─────────
+  function addLocateControl() {
+    const Locate = L.Control.extend({
+      options: { position: 'topright' },
+      onAdd() {
+        const btn = L.DomUtil.create('button', 'locate-btn');
+        btn.type = 'button';
+        btn.innerHTML = '📍 Dónde estoy';
+        btn.id = 'locateBtn';
+        L.DomEvent.disableClickPropagation(btn);
+        L.DomEvent.on(btn, 'click', toggleLocate);
+        return btn;
+      }
+    });
+    map.addControl(new Locate());
+  }
+
+  function toggleLocate() {
+    const btn = document.getElementById('locateBtn');
+    if (meMarker) {
+      // Apagar
+      map.removeLayer(meMarker);
+      meMarker = null;
+      myPos = null;
+      btn.classList.remove('active');
+      btn.innerHTML = '📍 Dónde estoy';
+      document.querySelectorAll('.card-distance').forEach(el => el.remove());
+      return;
+    }
+    if (!navigator.geolocation) {
+      alert('Tu navegador no soporta geolocalización.');
+      return;
+    }
+    btn.classList.add('loading');
+    btn.innerHTML = 'Localizando';
+    navigator.geolocation.getCurrentPosition(
+      pos => {
+        btn.classList.remove('loading');
+        btn.classList.add('active');
+        btn.innerHTML = '📍 Ocultar mi ubicación';
+        myPos = [pos.coords.latitude, pos.coords.longitude];
+        meMarker = L.marker(myPos, {
+          icon: L.divIcon({
+            className: '',
+            html: '<div class="me-marker"></div>',
+            iconSize: [18, 18],
+            iconAnchor: [9, 9]
+          }),
+          zIndexOffset: 10000
+        }).addTo(map);
+        meMarker.bindPopup('<strong>Tu ubicación</strong>');
+        renderDistances();
+        // Ajustar vista para incluir mi ubicación y los markers
+        const bounds = L.latLngBounds([myPos, ...SECTIONS.flatMap(s => s.items.map(i => [i.lat, i.lng]))]);
+        map.fitBounds(bounds, { padding: [40, 40], maxZoom: 13 });
+      },
+      err => {
+        btn.classList.remove('loading');
+        btn.innerHTML = '📍 Dónde estoy';
+        const msg = err.code === 1
+          ? 'Permiso denegado. Habilita la ubicación en los ajustes del navegador.'
+          : err.code === 2
+          ? 'No se pudo obtener tu ubicación (señal débil).'
+          : 'Timeout al obtener la ubicación.';
+        alert(msg);
+      },
+      { enableHighAccuracy: true, timeout: 10000, maximumAge: 60000 }
+    );
+  }
+
+  function renderDistances() {
+    if (!myPos) return;
+    SECTIONS.forEach(section => section.items.forEach(item => {
+      const card = document.querySelector(`.card[data-id="${item.id}"]`);
+      if (!card) return;
+      const km = haversineKm(myPos, [item.lat, item.lng]);
+      let el = card.querySelector('.card-distance');
+      if (!el) {
+        el = document.createElement('div');
+        el.className = 'card-distance';
+        card.querySelector('.card-body').appendChild(el);
+      }
+      el.textContent = formatDistance(km);
+    }));
   }
 
   function setMarkerDone(id, done) {
@@ -136,7 +263,7 @@
     if (!m) return;
     m._done = done;
     const section = m._section;
-    m.setIcon(buildMarkerIcon(section.markerColor, done));
+    m.setIcon(buildMarkerIcon(section.markerColor, done, section.markerEmoji));
     if (id === activeId) {
       // re-apply active styling
       setTimeout(() => setActiveMarker(id), 0);
