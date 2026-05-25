@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>San Diego Bucket List 2026</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,700;1,300&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <div class="layout">
+
+    <div class="col-content">
+      <header>
+        <div class="eyebrow"></div>
+        <h1>The <em>Bucket</em><br>List</h1>
+        <div class="header-meta"></div>
+      </header>
+
+      <div class="progress-wrap">
+        <div class="progress-label">
+          <span>Progreso del viaje</span>
+          <button id="resetBtn" class="reset-btn" type="button">Reset</button>
+        </div>
+        <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+        <div class="progress-count" id="progressCount">0 / 0 completados</div>
+      </div>
+
+      <main id="sections"></main>
+
+      <footer>
+        <div class="footer-note"><span class="fn-icon">🎟️</span><span><strong style="color:rgba(255,255,255,0.7)">Go San Diego Card:</strong> Con Zoo + SeaWorld, el pase combinado puede ahorrar 20–30% para 6 personas. Calculen antes de comprar por separado.</span></div>
+        <div class="footer-note"><span class="fn-icon">⚾</span><span>Padres sin juego en casa del 29 May al 3 Jun. Siguiente home game: 5 de Junio vs Mets.</span></div>
+        <div class="footer-note"><span class="fn-icon">🌡️</span><span>~20–24°C de día. June Gloom (niebla costera matutina) es normal — se despeja al mediodía. Chamarra ligera para las noches.</span></div>
+        <div class="footer-note"><span class="fn-icon">🍽️</span><span>Animae y Born and Raised requieren reservación. No lo dejen para último minuto con grupo de 6.</span></div>
+      </footer>
+    </div>
+
+    <div class="col-map">
+      <div id="map"></div>
+    </div>
+
+  </div>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
