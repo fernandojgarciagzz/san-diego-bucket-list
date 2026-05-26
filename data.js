@@ -128,6 +128,19 @@ const SECTIONS = [
           { class: 'tag-morning', label: 'Noche llegada' }
         ],
         lat: 32.7466, lng: -117.1670, zoom: 16
+      },
+      {
+        id: 'tacos-el-gordo-palm',
+        name: 'Tacos El Gordo — Palm Ave',
+        recommended: true,
+        desc: 'Institución de tacos estilo Tijuana al sur de SD. Adobada al trompo, asada, lengua, suadero, cabeza — vas a cada estación, pides al taquero, te dan el plato y pagas al final. Casual, ruidoso, abundante. No aceptan reservación. Vale el drive al sur (~30 min desde Del Cerro).',
+        tags: [
+          { class: 'tag-must', label: 'Must do' },
+          { class: 'tag-food', label: 'Tacos TJ-style' },
+          { class: 'tag-night', label: 'Abren tarde' },
+          { class: 'tag-tip', label: 'Cash & tarjeta' }
+        ],
+        lat: 32.5806, lng: -117.0735, zoom: 17
       }
     ]
   },
