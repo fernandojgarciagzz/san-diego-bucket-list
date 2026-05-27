@@ -130,17 +130,17 @@ const SECTIONS = [
         lat: 32.7466, lng: -117.1670, zoom: 16
       },
       {
-        id: 'tacos-el-gordo-palm',
-        name: 'Tacos El Gordo — Palm Ave',
+        id: 'tacos-el-gordo-downtown',
+        name: 'Tacos El Gordo — Downtown',
         recommended: true,
-        desc: 'Institución de tacos estilo Tijuana al sur de SD. Adobada al trompo, asada, lengua, suadero, cabeza — vas a cada estación, pides al taquero, te dan el plato y pagas al final. Casual, ruidoso, abundante. No aceptan reservación. Vale el drive al sur (~30 min desde Del Cerro).',
+        desc: 'En 511 F St, East Village (downtown). Adobada al trompo, asada, lengua, suadero — cada carne tiene su propia fila, te formas en la que quieres y te dan el plato directo. Casual, ruidoso, abundante. Súper céntrico: a 10 min del Embarcadero (USS Midway), 5 min del Gaslamp y cerca del fin de la carrera.',
         tags: [
           { class: 'tag-must', label: 'Must do' },
           { class: 'tag-food', label: 'Tacos TJ-style' },
-          { class: 'tag-night', label: 'Abren tarde' },
-          { class: 'tag-tip', label: 'Cash & tarjeta' }
+          { class: 'tag-group', label: 'East Village' },
+          { class: 'tag-tip', label: 'Fila por carne' }
         ],
-        lat: 32.5806, lng: -117.0735, zoom: 17
+        lat: 32.7128, lng: -117.1571, zoom: 17
       }
     ]
   },
