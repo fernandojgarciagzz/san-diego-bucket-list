@@ -105,6 +105,15 @@
   let activeId = null;
   let meMarker = null;
   let myPos = null;
+  let searchMarker = null;
+
+  function escapeHtml(s) {
+    return String(s)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+  }
 
   // ───────── Geo helpers ─────────
   function haversineKm(a, b) {
@@ -191,7 +200,106 @@
       });
     });
 
+    addSearchControl();
     addLocateControl();
+  }
+
+  // ───────── Buscar un lugar (Nominatim / OSM) ─────────
+  function addSearchControl() {
+    const Search = L.Control.extend({
+      options: { position: 'topleft' },
+      onAdd() {
+        const wrap = L.DomUtil.create('div', 'map-search');
+        wrap.innerHTML = `
+          <form class="map-search-form" autocomplete="off">
+            <input type="search" class="map-search-input" placeholder="Buscar un lugar…" aria-label="Buscar un lugar" />
+            <button type="submit" class="map-search-btn" aria-label="Buscar">⌕</button>
+          </form>
+          <div class="map-search-results" hidden></div>
+        `;
+        L.DomEvent.disableClickPropagation(wrap);
+        L.DomEvent.disableScrollPropagation(wrap);
+
+        const form = wrap.querySelector('.map-search-form');
+        const input = wrap.querySelector('.map-search-input');
+        const results = wrap.querySelector('.map-search-results');
+
+        form.addEventListener('submit', (e) => {
+          e.preventDefault();
+          doSearch(input.value, results);
+        });
+        results.addEventListener('click', (e) => {
+          const btn = e.target.closest('.map-search-result');
+          if (!btn) return;
+          showSearchResult(
+            parseFloat(btn.dataset.lat),
+            parseFloat(btn.dataset.lon),
+            btn.dataset.name
+          );
+          results.hidden = true;
+        });
+        return wrap;
+      }
+    });
+    map.addControl(new Search());
+
+    // Cerrar resultados al tocar el mapa
+    map.on('click', () => {
+      const r = document.querySelector('.map-search-results');
+      if (r) r.hidden = true;
+    });
+  }
+
+  async function doSearch(query, resultsEl) {
+    query = (query || '').trim();
+    if (!query) return;
+    resultsEl.hidden = false;
+    resultsEl.innerHTML = '<div class="map-search-msg">Buscando…</div>';
+
+    // Sesgar a San Diego County
+    const viewbox = '-117.45,33.25,-116.85,32.5';
+    const url = `https://nominatim.openstreetmap.org/search?format=jsonv2&limit=6&bounded=1&viewbox=${viewbox}&q=${encodeURIComponent(query)}`;
+
+    try {
+      const res = await fetch(url, { headers: { 'Accept-Language': 'es' } });
+      const data = await res.json();
+      if (!Array.isArray(data) || !data.length) {
+        resultsEl.innerHTML = '<div class="map-search-msg">Sin resultados en San Diego</div>';
+        return;
+      }
+      resultsEl.innerHTML = data.map(r => {
+        const primary = r.name && r.name.trim() ? r.name : r.display_name.split(',')[0];
+        const rest = r.display_name.split(',').slice(1, 4).join(',').trim();
+        return `
+          <button type="button" class="map-search-result"
+                  data-lat="${r.lat}" data-lon="${r.lon}"
+                  data-name="${escapeHtml(primary)}">
+            <span class="msr-name">${escapeHtml(primary)}</span>
+            <span class="msr-addr">${escapeHtml(rest)}</span>
+          </button>`;
+      }).join('');
+    } catch (err) {
+      resultsEl.innerHTML = '<div class="map-search-msg">Error al buscar. Intenta de nuevo.</div>';
+    }
+  }
+
+  function showSearchResult(lat, lon, name) {
+    if (Number.isNaN(lat) || Number.isNaN(lon)) return;
+    if (searchMarker) map.removeLayer(searchMarker);
+    searchMarker = L.marker([lat, lon], {
+      icon: L.divIcon({
+        className: '',
+        html: '<div class="search-marker"></div>',
+        iconSize: [30, 30],
+        iconAnchor: [15, 30],
+        popupAnchor: [0, -28]
+      }),
+      zIndexOffset: 9000
+    }).addTo(map);
+    searchMarker.bindPopup(
+      `<div class="popup-cat">Resultado de búsqueda</div><strong>${escapeHtml(name)}</strong>`
+    ).openPopup();
+    map.flyTo([lat, lon], 16, { duration: 1.0 });
   }
 
   // ───────── Locate me ─────────
